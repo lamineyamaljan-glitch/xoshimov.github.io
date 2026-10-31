@@ -1,73 +1,81 @@
-/* Real menu from the restaurant's Instagram "Menyu" stories (18.10). img: photo in img/, no img = icon */
+/* Real menu from the restaurant's Instagram "Menyu" stories (18.10). img: photo in img/, no img = icon.
+   d: the dish description shown in the menu and on the photo. nopack: a category delivered without disposable dishes. */
 const S = (uz, ru, en) => ({ uz, ru, en });
 const MENU = [
   { id:"milliy", icon:"fa-crown", n:S("Milliy taomlar","Национальные блюда","National dishes"), items:[
-    { n:S("Beshbarmoq","Бешбармак","Beshbarmak"), d:S("Go'sht, xamir va piyoz, sorpa bilan","Мясо, тесто и лук, с сорпой","Meat, noodles and onion, with broth"), p:115000, tag:"hit", img:"beshbarmak" },
-    { n:S("Manti","Манты","Manti"), d:S("Qaymoqli sous bilan","Со сметанным соусом","With sour cream sauce"), p:60000, img:"manty" },
-    { n:S("Bo'yin","Буйин","Buyin"), d:S("Kartoshka va sabzavotlar bilan, katta tovoq","С картофелем и овощами, большое блюдо","With potatoes and vegetables, large platter"), p:200000, w:S("1 kg","1 кг","1 kg"), img:"buyin" },
-    { n:S("Jiz","Жиз","Jiz"), d:S("Qovurilgan go'sht, sabzavotlar va sous","Жареное мясо, овощи и соус","Fried meat, vegetables and sauce"), p:80000, img:"jiz" },
-    { n:S("Qozon kabob","Казан-кебаб","Kazan kebab"), d:S("Go'sht va kartoshka, piyoz bilan","Мясо и картофель, с луком","Meat and potatoes, with onion"), p:80000, img:"kazan-kebab" },
-    { n:S("Do'lma","Долма","Dolma"), d:S("Tok bargida, sous bilan","В виноградных листьях, с соусом","In vine leaves, with sauce"), p:45000, img:"dolma" }
+    { n:S("Beshbarmoq","Бешбармак","Beshbarmak"), d:S("Mayin qaynatilgan go'sht, yupqa kesilgan uy xamiri va piyoz. Yonida issiq sorpa — quyuq go'sht sho'rva. Restoranimizning faxri.","Нежное отварное мясо, тонко нарезанное домашнее тесто и лук. К блюду подаётся горячая сорпа — наваристый мясной бульон. Гордость ресторана.","Tender boiled meat, thin hand-cut noodles and onion, served with hot sorpa, a rich meat broth. The pride of our kitchen."), p:115000, tag:"hit", img:"beshbarmak" },
+    { n:S("Manti","Манты","Manti"), d:S("Bug'da pishirilgan shirali manti: maydalangan go'sht va piyoz yupqa xamirda. Qaymoqli sous bilan.","Сочные манты на пару: рубленое мясо с луком в тонком тесте. Подаются со сметанным соусом.","Juicy steamed dumplings with chopped meat and onion in thin dough, served with sour cream sauce."), p:60000, img:"manty" },
+    { n:S("Bo'yin","Буйин","Buyin"), d:S("Kartoshka va sabzavotlar bilan dimlangan go'sht. Katta tovoq, butun davra uchun.","Томлёное мясо с картофелем и овощами. Большое блюдо на всю компанию.","Slow-cooked meat with potatoes and vegetables. A large platter for the whole table."), p:200000, w:S("1 kg","1 кг","1 kg"), img:"buyin" },
+    { n:S("Jiz","Жиз","Jiz"), d:S("Baland olovda sabzavotlar bilan qovurilgan go'sht, o'z sousida. Issiq holda tortiladi.","Мясо, обжаренное на сильном огне с овощами, в собственном соусе. Подаётся горячим.","Meat seared over high heat with vegetables in its own sauce. Served sizzling hot."), p:80000, img:"jiz" },
+    { n:S("Qozon kabob","Казан-кебаб","Kazan kebab"), d:S("Qozonda tilla rang qobiqqacha qovurilgan go'sht va kartoshka, piyoz va ko'katlar bilan.","Мясо и картофель, обжаренные в казане до золотистой корочки, с луком и зеленью.","Meat and potatoes fried in a kazan until golden, with onion and herbs."), p:80000, img:"kazan-kebab" },
+    { n:S("Do'lma","Долма","Dolma"), d:S("Tok bargiga o'ralgan qiyma va guruch, ziravorlar bilan. Sous bilan tortiladi.","Рубленое мясо с рисом и пряностями в виноградных листьях. Подаётся с соусом.","Minced meat and rice with spices wrapped in vine leaves, served with sauce."), p:45000, img:"dolma" }
   ]},
   { id:"issiq", icon:"fa-drumstick-bite", n:S("Issiq taomlar","Горячие блюда","Hot dishes"), items:[
-    { n:S("Guruchli pishirilgan son","Запечённое бедро с рисом","Baked chicken thigh with rice"), d:S("Sabzavotlar va sous bilan","С овощами и соусом","With vegetables and sauce"), p:50000, img:"bedro" },
-    { n:S("Tovuq tayoqchalari","Куриные палочки","Chicken strips"), d:S("Fri kartoshka va sous bilan","С картофелем фри и соусом","With fries and sauce"), p:45000, img:"palochki" }
+    { n:S("Guruchli pishirilgan son","Запечённое бедро с рисом","Baked chicken thigh with rice"), d:S("Qizarguncha pishirilgan tovuq soni. Garnirga guruch va sabzavotlar, sous bilan.","Куриное бедро, запечённое до румяной корочки. На гарнир рис и овощи, с соусом.","Chicken thigh baked until golden, with rice, vegetables and sauce."), p:50000, img:"bedro" },
+    { n:S("Tovuq tayoqchalari","Куриные палочки","Chicken strips"), d:S("Qarsildoq panirovkadagi tovuq filesi. Fri kartoshka va sous bilan.","Хрустящее куриное филе в панировке. С картофелем фри и соусом.","Crispy breaded chicken fillet with fries and sauce."), p:45000, img:"palochki" }
   ]},
   { id:"assorti", icon:"fa-users", n:S("Xan assorti","Хан ассорти","Khan platters"), items:[
-    { n:S("Xan assorti — 6 kishilik","Хан ассорти на 6 человек","Khan platter for 6"), d:S("Shashlik, qanotlar, lyulya, sabzavotlar, kartoshka","Шашлык, крылышки, люля, овощи, картофель","Kebabs, wings, lyulya, vegetables, potatoes"), p:550000, img:"assorti-6" },
-    { n:S("Xan assorti — 8 kishilik","Хан ассорти на 8 человек","Khan platter for 8"), d:S("Shashlik, qanotlar, sabzavotlar, kartoshka","Шашлык, крылышки, овощи, картофель","Kebabs, wings, vegetables, potatoes"), p:750000, img:"assorti-8" },
-    { n:S("Xan assorti — 10 kishilik","Хан ассорти на 10 человек","Khan platter for 10"), d:S("Katta to'y tovog'i: shashlik, lyulya, qanotlar, sabzavotlar","Большое блюдо: шашлык, люля, крылышки, овощи","Feast platter: kebabs, lyulya, wings, vegetables"), p:950000, tag:"hit", img:"assorti-10" }
+    { n:S("Xan assorti — 6 kishilik","Хан ассорти на 6 человек","Khan platter for 6"), d:S("6 kishilik mangal assorti: shashlik, tovuq qanotlari, lyulya-kabob, grildagi sabzavotlar va kartoshka.","Ассорти с мангала на 6 человек: шашлык, куриные крылышки, люля-кебаб, овощи гриль и картофель.","Grill platter for 6: kebabs, chicken wings, lyulya kebab, grilled vegetables and potatoes."), p:550000, img:"assorti-6" },
+    { n:S("Xan assorti — 8 kishilik","Хан ассорти на 8 человек","Khan platter for 8"), d:S("8 kishilik mangal assorti: shashlik, tovuq qanotlari, sabzavotlar va kartoshka.","Ассорти с мангала на 8 человек: шашлык, куриные крылышки, овощи и картофель.","Grill platter for 8: kebabs, chicken wings, vegetables and potatoes."), p:750000, img:"assorti-8" },
+    { n:S("Xan assorti — 10 kishilik","Хан ассорти на 10 человек","Khan platter for 10"), d:S("10 kishilik eng katta bayram tovog'i: shashlik, lyulya-kabob, tovuq qanotlari va sabzavotlar.","Самое большое праздничное блюдо на 10 человек: шашлык, люля-кебаб, крылышки и овощи.","Our biggest feast platter for 10: kebabs, lyulya kebab, chicken wings and vegetables."), p:950000, tag:"hit", img:"assorti-10" }
   ]},
   { id:"shashlik", icon:"fa-fire-flame-curved", n:S("Shashlik","Шашлык","Kebabs"), items:[
-    { n:S("Tovuq shashlik","Куриный шашлык","Chicken kebab"), d:S("Ko'mirda, piyoz bilan","На углях, с луком","Charcoal grilled, with onion"), p:22000, img:"shashlyk-kuriny" },
-    { n:S("Qanotchalar","Крылышки","Chicken wings"), d:S("Ko'mirda, piyoz bilan","На углях, с луком","Charcoal grilled, with onion"), p:22000, img:"krylyshki" },
-    { n:S("Rulet","Рулет","Rulet"), d:S("Qiymali shashlik, piyoz bilan","Шашлык из фарша, с луком","Minced meat kebab, with onion"), p:25000, img:"rulet" },
-    { n:S("Bo'lak go'sht shashlik","Кусковой шашлык","Meat chunk kebab"), d:S("Ko'mirda, piyoz bilan","На углях, с луком","Charcoal grilled, with onion"), p:25000, img:"shashlyk-kuskovoy" },
-    { n:S("Jigar shashlik","Шашлык из печени","Liver kebab"), d:S("Ko'mirda, piyoz bilan","На углях, с луком","Charcoal grilled, with onion"), p:22000, img:"shashlyk-pechen" },
-    { n:S("Qiyma shashlik","Молотый шашлык","Minced meat kebab"), d:S("Ko'mirda, piyoz bilan","На углях, с луком","Charcoal grilled, with onion"), p:23000, img:"shashlyk-molotyy" }
+    { n:S("Tovuq shashlik","Куриный шашлык","Chicken kebab"), d:S("Marinadlangan tovuq go'shti, ko'mirda pishirilgan. Piyoz bilan.","Маринованная курица, жаренная на углях. Подаётся с луком.","Marinated chicken grilled over charcoal, served with onion."), p:22000, img:"shashlyk-kuriny" },
+    { n:S("Qanotchalar","Крылышки","Chicken wings"), d:S("Marinadlangan tovuq qanotlari, ko'mirda qarsildoq qobiqqacha pishirilgan. Piyoz bilan.","Маринованные куриные крылышки, жаренные на углях до хрустящей корочки. С луком.","Marinated chicken wings grilled over charcoal until crisp, with onion."), p:22000, img:"krylyshki" },
+    { n:S("Rulet","Рулет","Rulet"), d:S("Ziravorli qiymadan rulet-shashlik, ko'mirda pishirilgan. Piyoz bilan.","Шашлык-рулет из пряного мясного фарша, жаренный на углях. С луком.","Rolled kebab of spiced minced meat grilled over charcoal, with onion."), p:25000, img:"rulet" },
+    { n:S("Bo'lak go'sht shashlik","Кусковой шашлык","Meat chunk kebab"), d:S("Marinadlangan shirali go'sht bo'laklari, ko'mirda pishirilgan. Piyoz bilan.","Сочные куски маринованного мяса, жаренные на углях. С луком.","Juicy chunks of marinated meat grilled over charcoal, with onion."), p:25000, img:"shashlyk-kuskovoy" },
+    { n:S("Jigar shashlik","Шашлык из печени","Liver kebab"), d:S("Ko'mirda pishirilgan jigar: ichi yumshoq, usti yengil qobiqli. Piyoz bilan.","Печень на углях: нежная внутри, с лёгкой корочкой снаружи. С луком.","Liver grilled over charcoal, tender inside with a light crust, served with onion."), p:22000, img:"shashlyk-pechen" },
+    { n:S("Qiyma shashlik","Молотый шашлык","Minced meat kebab"), d:S("Piyoz va ziravorlar qo'shilgan qiyma, sixda ko'mirda pishirilgan.","Рубленое мясо с луком и специями на шампуре, жаренное на углях.","Minced meat with onion and spices on a skewer, grilled over charcoal."), p:23000, img:"shashlyk-molotyy" }
   ]},
   { id:"shorva", icon:"fa-mug-hot", n:S("Sho'rvalar","Супы","Soups"), items:[
-    { n:S("Sho'rva","Шурпа","Shurpa"), d:S("Go'sht va kartoshka","Мясо и картофель","Meat and potatoes"), p:45000, img:"shurpa" },
-    { n:S("Norin","Нарын","Naryn"), d:S("Sorpa bilan","С бульоном","With broth"), p:35000, w:S("kichik","малый","small"), img:"naryn" },
-    { n:S("Norin","Нарын","Naryn"), d:S("Sorpa bilan","С бульоном","With broth"), p:40000, w:S("katta","большой","large"), img:"naryn" },
-    { n:S("Chuchvara","Пельмени","Pelmeni"), d:S("Ko'katlar bilan","С зеленью","With herbs"), p:35000, img:"pelmeni" },
-    { n:S("Frikadelkali sho'rva","Суп с фрикадельками","Meatball soup"), d:S("Ugra va sabzavotlar","Лапша и овощи","Noodles and vegetables"), p:40000, img:"frikadelki" },
-    { n:S("Okroshka","Окрошка","Okroshka"), d:S("Sovuq sho'rva","Холодный суп","Cold soup"), p:null, img:"okroshka" }
+    { n:S("Sho'rva","Шурпа","Shurpa"), d:S("Yirik go'sht bo'laklari, kartoshka va sabzavotli quyuq go'sht sho'rva, ko'katlar bilan.","Наваристый мясной суп с крупными кусками мяса, картофелем и овощами, с зеленью.","Hearty meat soup with large pieces of meat, potatoes and vegetables, topped with herbs."), p:45000, img:"shurpa" },
+    { n:S("Norin","Нарын","Naryn"), d:S("Yupqa to'g'ralgan uy xamiri, qaynatilgan go'sht va piyoz. Issiq sorpa bilan.","Тонко нарезанное домашнее тесто, отварное мясо и лук. Подаётся с горячим бульоном.","Thinly cut homemade noodles with boiled meat and onion, served with hot broth."), p:35000, w:S("kichik","малый","small"), img:"naryn" },
+    { n:S("Norin","Нарын","Naryn"), d:S("Yupqa to'g'ralgan uy xamiri, qaynatilgan go'sht va piyoz. Issiq sorpa bilan.","Тонко нарезанное домашнее тесто, отварное мясо и лук. Подаётся с горячим бульоном.","Thinly cut homemade noodles with boiled meat and onion, served with hot broth."), p:40000, w:S("katta","большой","large"), img:"naryn" },
+    { n:S("Chuchvara","Пельмени","Pelmeni"), d:S("Go'shtli uy chuchvarasi sho'rvada, ko'katlar bilan.","Домашние пельмени с мясом в бульоне, с зеленью.","Homemade meat dumplings in broth, with herbs."), p:35000, img:"pelmeni" },
+    { n:S("Frikadelkali sho'rva","Суп с фрикадельками","Meatball soup"), d:S("Go'shtli frikadelkalar, ugra va sabzavotli yengil sho'rva.","Лёгкий суп с мясными фрикадельками, лапшой и овощами.","Light soup with meatballs, noodles and vegetables."), p:40000, img:"frikadelki" },
+    { n:S("Okroshka","Окрошка","Okroshka"), d:S("Sabzavot va ko'katli tetiklashtiruvchi sovuq sho'rva.","Освежающий холодный суп с овощами и зеленью.","Refreshing cold soup with vegetables and herbs."), p:null, img:"okroshka" }
   ]},
   { id:"salat", icon:"fa-leaf", n:S("Salatlar","Салаты","Salads"), items:[
-    { n:S("Grekcha","Греческий","Greek"), d:S("Sabzavotlar, pishloq, zaytun","Овощи, сыр, маслины","Vegetables, cheese, olives"), p:55000, img:"grecheskiy" },
-    { n:S("Sezar","Цезарь","Caesar"), d:S("Tovuq, pishloq, bedana tuxumi","Курица, сыр, перепелиные яйца","Chicken, cheese, quail eggs"), p:50000, tag:"hit", img:"tsezar" },
-    { n:S("Julia","Джулия","Julia"), d:S("","",""), p:45000, img:"julia" },
-    { n:S("Pod vodochku","Под водочку","Pod vodochku"), d:S("Go'sht va qo'ziqorin","Мясо и грибы","Meat and mushrooms"), p:50000, img:"pod-vodochku" },
-    { n:S("Chiroqchi","Чирокчи","Chirokchi"), d:S("","",""), p:35000, img:"chirokchi" },
-    { n:S("Pikantniy","Пикантный","Piquant"), d:S("","",""), p:45000, img:"pikantnyy" },
-    { n:S("Xan","Хан","Khan"), d:S("","",""), p:45000, img:"xan" },
-    { n:S("Prints","Принц","Prince"), d:S("","",""), p:45000, img:"prints" },
-    { n:S("Smak","Смак","Smak"), d:S("","",""), p:45000, img:"smak" },
-    { n:S("Chen-son","Чен-сон","Chen-son"), d:S("","",""), p:50000, img:"chen-son" },
-    { n:S("Rukkolali salat","Салат с рукколой","Arugula salad"), d:S("","",""), p:50000, img:"rukkola" },
-    { n:S("Sharqona","Восточный","Oriental"), d:S("","",""), p:45000, img:"vostochnyy" },
-    { n:S("Mujskoy kapriz","Мужской каприз","Men's Caprice"), d:S("","",""), p:45000, img:"mujskoy-kapriz" },
-    { n:S("Gnezdo gluxarya","Гнездо глухаря","Grouse's Nest"), d:S("Kartoshka somoni va bedana tuxumi","Картофель пай и перепелиные яйца","Potato straws and quail eggs"), p:45000, img:"gnezdo" },
-    { n:S("Go'shtli olivye","Оливье с мясом","Olivier with meat"), d:S("","",""), p:45000, img:"olivye" },
-    { n:S("Xan shatir","Хан шатыр","Khan Shatyr"), d:S("Restoranning nomdosh salati","Фирменный салат ресторана","The restaurant's signature salad"), p:60000, tag:"hit", img:"xan-shatyr" },
-    { n:S("Tbilisi","Тбилиси","Tbilisi"), d:S("Go'sht, loviya, sabzavotlar, yong'oq","Мясо, фасоль, овощи, орехи","Meat, beans, vegetables, nuts"), p:45000, img:"tbilisi" },
-    { n:S("Ruscha seledka","Селёдочка по-русски","Russian-style herring"), d:S("Kartoshka, piyoz va no'xat bilan","С картофелем, луком и горошком","With potatoes, onion and peas"), p:45000, img:"seledka" }
+    { n:S("Grekcha","Греческий","Greek"), d:S("Yangi pomidor, bodring, bolgar qalampiri va qizil piyoz, pishloq va zaytun bilan, moy bilan ziravorlangan.","Свежие помидоры, огурцы, болгарский перец и красный лук с сыром и маслинами, заправлены маслом.","Fresh tomatoes, cucumbers, bell pepper and red onion with cheese and olives, dressed with oil."), p:55000, img:"grecheskiy" },
+    { n:S("Sezar","Цезарь","Caesar"), d:S("Salat barglari, tovuq go'shti, pishloq, suxariklar va bedana tuxumi, «Sezar» sousi bilan.","Листья салата, курица, сыр, сухарики и перепелиные яйца под соусом «Цезарь».","Lettuce, chicken, cheese, croutons and quail eggs with Caesar dressing."), p:50000, tag:"hit", img:"tsezar" },
+    { n:S("Julia","Джулия","Julia"), d:S("Go'sht tolalari, shirin makkajo'xori, cherri pomidor, loviya qo'zoqlari va ko'katlar, balzamik sous bilan.","Волокна мяса, сладкая кукуруза, черри, стручковая фасоль и зелень с бальзамическим соусом.","Pulled meat, sweet corn, cherry tomatoes, green beans and herbs with balsamic sauce."), p:45000, img:"julia" },
+    { n:S("Pod vodochku","Под водочку","Pod vodochku"), d:S("Go'sht va qo'ziqorinli to'yimli salat — dasturxon uchun klassik gazak.","Сытный салат с мясом и грибами — классическая закуска к застолью.","A hearty salad of meat and mushrooms, a classic for the festive table."), p:50000, img:"pod-vodochku" },
+    { n:S("Chiroqchi","Чирокчи","Chirokchi"), d:S("Pomidor va bodring yengil qaymoqli zapravkada, xushbo'y rayhon bilan.","Помидоры и огурцы в лёгкой сметанной заправке с ароматным базиликом.","Tomatoes and cucumbers in a light sour cream dressing with fragrant basil."), p:35000, img:"chirokchi" },
+    { n:S("Pikantniy","Пикантный","Piquant"), d:S("Go'sht va marinadlangan bodring mayin zapravkada, shivit va cherri bilan bezatilgan.","Мясо и маринованные огурчики в нежной заправке, украшен укропом и черри.","Meat and pickled cucumbers in a creamy dressing, topped with dill and a cherry tomato."), p:45000, img:"pikantnyy" },
+    { n:S("Xan","Хан","Khan"), d:S("Tovuq go'shti, tuxum, shirin makkajo'xori, pomidor va bodring, mayonezli zapravka bilan.","Курица, яйцо, сладкая кукуруза, помидоры и огурцы в майонезной заправке.","Chicken, egg, sweet corn, tomatoes and cucumbers in a mayonnaise dressing."), p:45000, img:"xan" },
+    { n:S("Prints","Принц","Prince"), d:S("Tovuq go'shti va sabzavotlar qaymoqli zapravkada, ustidan mo'l qirg'ichlangan pishloq.","Курица и овощи в сливочной заправке, щедро посыпаны тёртым сыром.","Chicken and vegetables in a creamy dressing under a generous layer of grated cheese."), p:45000, img:"prints" },
+    { n:S("Smak","Смак","Smak"), d:S("Go'sht, sabzavotlar va ko'katlar mayin zapravkada, qirg'ichlangan pishloq ostida.","Мясо, овощи и зелень в нежной заправке под шапкой тёртого сыра.","Meat, vegetables and herbs in a creamy dressing under a cap of grated cheese."), p:45000, img:"smak" },
+    { n:S("Chen-son","Чен-сон","Chen-son"), d:S("Koreyscha achchiq salat: go'sht tasmalari, bolgar qalampiri, piyoz va ko'katlar.","Острый салат по-корейски: полоски мяса с болгарским перцем, луком и зеленью.","Spicy Korean-style salad: strips of meat with bell pepper, onion and herbs."), p:50000, img:"chen-son" },
+    { n:S("Rukkolali salat","Салат с рукколой","Arugula salad"), d:S("Rukkola, go'sht bo'laklari, mini makkajo'xori, cherri, pishloq va kedr yong'og'i.","Руккола с ломтиками мяса, мини-кукурузой, черри, сыром и кедровыми орешками.","Arugula with slices of meat, baby corn, cherry tomatoes, cheese and pine nuts."), p:50000, img:"rukkola" },
+    { n:S("Sharqona","Восточный","Oriental"), d:S("Iliq salat: qovurilgan go'sht, qovoqcha, bolgar qalampiri, kunjut va ko'katlar.","Тёплый салат: обжаренное мясо с цукини, болгарским перцем, кунжутом и зеленью.","Warm salad of seared meat with zucchini, bell pepper, sesame and herbs."), p:45000, img:"vostochnyy" },
+    { n:S("Mujskoy kapriz","Мужской каприз","Men's Caprice"), d:S("Go'sht, bodring va pomidordan to'yimli salat, zapravkada, pishloq ostida, salat barglarida.","Сытный салат из мяса, огурцов и помидоров в заправке под тёртым сыром, на листьях салата.","A hearty salad of meat, cucumbers and tomatoes in dressing under grated cheese, on lettuce."), p:45000, img:"mujskoy-kapriz" },
+    { n:S("Gnezdo gluxarya","Гнездо глухаря","Grouse's Nest"), d:S("Go'sht va sabzavotlar zapravkada, kartoshka somoni «uyasi» ichida bedana tuxumlari bilan.","Мясо и овощи в заправке в «гнезде» из картофеля пай, сверху перепелиные яйца.","Meat and vegetables in dressing inside a nest of potato straws, topped with quail eggs."), p:45000, img:"gnezdo" },
+    { n:S("Go'shtli olivye","Оливье с мясом","Olivier with meat"), d:S("Klassik olivye: qaynatilgan go'sht, kartoshka, sabzi, bodring, tuxum va ko'k no'xat.","Классический оливье: отварное мясо, картофель, морковь, огурцы, яйцо и зелёный горошек.","Classic Olivier: boiled meat, potatoes, carrots, cucumbers, egg and green peas."), p:45000, img:"olivye" },
+    { n:S("Xan shatir","Хан шатыр","Khan Shatyr"), d:S("Restoranning nomdosh salati: qarsildoq baqlajon, salat barglari, motsarella, cherri va pishgan qalampir, balzamik bilan.","Фирменный салат ресторана: хрустящие баклажаны, листья салата, моцарелла, черри и печёный перец под бальзамиком.","Our signature salad: crispy aubergine, lettuce, mozzarella, cherry tomatoes and roasted pepper with balsamic."), p:60000, tag:"hit", img:"xan-shatyr" },
+    { n:S("Tbilisi","Тбилиси","Tbilisi"), d:S("Gruzincha salat: go'sht, qizil loviya, bolgar qalampiri, piyoz, yong'oq va ko'katlar.","Салат по-грузински: мясо, красная фасоль, болгарский перец, лук, грецкие орехи и зелень.","Georgian-style salad: meat, red beans, bell pepper, onion, walnuts and herbs."), p:45000, img:"tbilisi" },
+    { n:S("Ruscha seledka","Селёдочка по-русски","Russian-style herring"), d:S("Seledka qaynatilgan kartoshka, marinadlangan piyoz va ko'k no'xat bilan.","Селёдка с отварным картофелем, маринованным луком и зелёным горошком.","Herring with boiled potatoes, pickled onion and green peas."), p:45000, img:"seledka" }
   ]},
   { id:"gazak", icon:"fa-plate-wheat", n:S("Gazaklar va mevalar","Закуски и фрукты","Starters & fruit"), items:[
-    { n:S("Go'shtli assorti","Мясное ассорти","Meat platter"), d:S("Til, kolbasa va go'sht kesmalari","Язык, колбаса и мясная нарезка","Tongue, sausage and cold cuts"), p:150000, img:"assorti-myasnoe" },
-    { n:S("Tuzlama assorti","Соленое ассорти","Pickles platter"), d:S("Tuzlangan sabzavotlar","Соленья","Pickled vegetables"), p:35000, img:"assorti-solenoe" },
-    { n:S("Meva assorti","Фруктовое ассорти","Fruit platter"), d:S("Mavsumiy mevalar","Сезонные фрукты","Seasonal fruit"), p:145000, img:"assorti-frukt" },
-    { n:S("Achchiq-chuchuk","Ачик-чучук","Achichuk"), d:S("Pomidor, piyoz, bodring, ko'katlar","Помидоры, лук, огурцы, зелень","Tomato, onion, cucumber, herbs"), p:25000, img:"achik-chuchuk" },
-    { n:S("Yangi sabzavotlar","Свежее ассорти","Fresh vegetable platter"), d:S("Pomidor, bodring, ko'katlar, sarimsoq","Помидоры, огурцы, зелень, чеснок","Tomatoes, cucumbers, herbs, garlic"), p:25000, img:"svezhee" },
-    { n:S("Suzma","Сузьма","Suzma"), d:S("Quyultirilgan qatiq","Густой кисломолочный сыр","Strained yogurt"), p:10000, img:"suzma" }
+    { n:S("Go'shtli assorti","Мясное ассорти","Meat platter"), d:S("Qaynatilgan til, kolbasa va go'sht kesmalari — davra uchun gazak.","Отварной язык, колбаса и мясная нарезка — закуска на компанию.","Boiled tongue, sausage and cold cuts, a starter for the table."), p:150000, img:"assorti-myasnoe" },
+    { n:S("Tuzlama assorti","Соленое ассорти","Pickles platter"), d:S("Uy tuzlamalari assortisi: tuzlangan sabzavotlar.","Ассорти домашних солений.","An assortment of homemade pickled vegetables."), p:35000, img:"assorti-solenoe" },
+    { n:S("Meva assorti","Фруктовое ассорти","Fruit platter"), d:S("Mavsumiy yangi mevalar kesmasi, katta davra uchun.","Нарезка свежих сезонных фруктов на большую компанию.","Sliced fresh seasonal fruit for a large table."), p:145000, img:"assorti-frukt" },
+    { n:S("Achchiq-chuchuk","Ачик-чучук","Achichuk"), d:S("Yupqa to'g'ralgan pomidor, piyoz, bodring va ko'katlar — go'shtli taomlarga klassik o'zbek salati.","Тонко нарезанные помидоры, лук, огурцы и зелень — классический узбекский салат к мясу.","Thinly sliced tomatoes, onion, cucumbers and herbs, the classic Uzbek salad for meat dishes."), p:25000, img:"achik-chuchuk" },
+    { n:S("Yangi sabzavotlar","Свежее ассорти","Fresh vegetable platter"), d:S("Yangi pomidor, bodring, ko'katlar va sarimsoq.","Свежие помидоры, огурцы, зелень и чеснок.","Fresh tomatoes, cucumbers, herbs and garlic."), p:25000, img:"svezhee" },
+    { n:S("Suzma","Сузьма","Suzma"), d:S("Quyuq uy suzmasi — go'sht va non bilan juda mos.","Густой домашний кисломолочный сыр, хорош к мясу и лепёшке.","Thick homemade strained yogurt, great with meat and bread."), p:10000, img:"suzma" }
   ]},
-  { id:"non", icon:"fa-bread-slice", n:S("Non","Хлеб и выпечка","Bread"), items:[
-    { n:S("Non","Хлеб","Bread"), d:S("Tandir noni","Лепёшка из тандыра","Tandoor flatbread"), p:6000, img:"non" },
-    { n:S("Qatlama","Катлама","Katlama"), d:S("Qatlamali yupqa non","Слоёная лепёшка","Layered flatbread"), p:15000, img:"katlama" },
-    { n:S("Bauyrsak","Бауырсак","Baursak"), d:S("Qaymoq bilan","Со сметаной","With sour cream"), p:25000, img:"bauyrsak" }
+  { id:"non", icon:"fa-bread-slice", nopack:true, n:S("Non","Хлеб и выпечка","Bread"), items:[
+    { n:S("Non","Хлеб","Bread"), d:S("Tandirdan issiq non.","Горячая лепёшка из тандыра.","Hot flatbread from the tandoor."), p:6000, img:"non" },
+    { n:S("Qatlama","Катлама","Katlama"), d:S("Qarsildoq qobiqqacha qovurilgan yupqa qatlamali non.","Тонкая слоёная лепёшка, обжаренная до хрустящей корочки.","Thin layered flatbread fried until crisp."), p:15000, img:"katlama" },
+    { n:S("Bauyrsak","Бауырсак","Baursak"), d:S("Xamirturushli xamirdan yumshoq qovurilgan bo'g'irsoqlar, qaymoq bilan.","Пышные жареные пончики из дрожжевого теста, со сметаной.","Fluffy fried dough puffs served with sour cream."), p:25000, img:"bauyrsak" }
   ]},
-  { id:"ichimlik", icon:"fa-glass-water", n:S("Ichimliklar","Напитки","Drinks"), items:[
-    { n:S("Qimiz","Кымыз","Kumis"), d:S("Biya sutidan milliy ichimlik","Национальный напиток из кобыльего молока","Traditional fermented mare's milk"), p:50000, img:"kymyz" }
+  { id:"ichimlik", icon:"fa-glass-water", nopack:true, n:S("Ichimliklar","Напитки","Drinks"), items:[
+    { n:S("Qimiz","Кымыз","Kumis"), d:S("Biya sutidan an'anaviy achitilgan ichimlik, tetiklashtiradi.","Традиционный кисломолочный напиток из кобыльего молока, освежает и бодрит.","Traditional fermented mare's milk, light and refreshing."), p:50000, img:"kymyz" }
   ]}
 ];
+
+/* Disposable dishes for delivery: PACK_FEE for every portion of a dish that needs them.
+   The owner ticks the dishes in the panel (stored on the order server); a dish not ticked there yet
+   follows its category: bread and drinks go without dishes, everything else with them. */
+const PACK_FEE = 10000;
+const dishKey = d => d.n.ru + (d.w ? ` (${d.w.ru})` : '');   // the name an order carries, also the key for the dishes setting
+const needsPack = (c, d, set) => { const k = dishKey(d); return set && k in set ? !!set[k] : !c.nopack; };

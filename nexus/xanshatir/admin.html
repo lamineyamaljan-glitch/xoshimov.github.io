@@ -109,6 +109,17 @@ a.tg{text-decoration:none}
 .login input{width:100%;padding:14px;border-radius:12px;border:1px solid var(--line);background:rgba(4,20,12,.8);color:#fff;font:700 24px 'Space Grotesk';letter-spacing:.5em;text-align:center}
 .login button{width:100%;margin-top:12px;padding:13px;border-radius:12px;background:var(--gold);color:#0b0b0b;font-weight:700}
 .login .err{color:#ff8a80;font-size:13px;margin-top:10px;min-height:18px}
+.pkbox{margin-top:12px}
+.pkbox[hidden]{display:none}
+.pkbox h3{margin:14px 0 6px;font:600 11px 'Space Grotesk';letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+.pkl{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:6px}
+.pkl label{display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:10px;border:1px solid var(--grid);font-size:13px;cursor:pointer}
+.pkl label:has(input:checked){border-color:var(--line);background:rgba(212,175,55,.08)}
+.pkl input{flex:none;width:17px;height:17px;accent-color:var(--gold)}
+.pkf{display:flex;align-items:center;gap:12px;margin-top:14px}
+.pkf button{padding:11px 18px;border-radius:12px;background:var(--gold);color:#0b0b0b;font-weight:700;font-size:13px}
+.pkf button:disabled{opacity:.6}
+.pkf span{font-size:12px;color:var(--muted)}
 .empty{margin-top:12px;padding:16px;border-radius:14px;border:1px dashed var(--line);font-size:13px;color:var(--muted);text-align:center}
 .empty a{color:var(--gold-lt)}
 @media (max-width:860px){.kpis{grid-template-columns:1fr 1fr}.grid{grid-template-columns:1fr}.kpi b{font-size:22px}}
@@ -147,6 +158,10 @@ a.tg{text-decoration:none}
     <div class="box"><h2 data-i="tblT"></h2><div class="sub" data-i="tblS"></div><div class="tables" id="tables"></div><div class="legend"><span data-i="less"></span><i></i><span data-i="more"></span></div></div>
   </div>
 
+  <div class="box pkbox" id="packBox" hidden><h2 data-i="packT"></h2><div class="sub" data-i="packS"></div>
+    <div id="packList"></div>
+    <div class="pkf"><button id="packSave" data-i="save"></button><span id="packMsg"></span></div></div>
+
   <a class="brand" href="./">Nexus Card ·<b>XAN SHATIR</b></a>
 </div>
 
@@ -157,21 +172,23 @@ const T = {
   uz:{title:"Savdo paneli · egasi uchun",demo:"Statistikada demo tarix ham bor. Stollardan kelgan buyurtmalar yuqorida jonli ko'rinadi; «To'landi» bosilgach statistikaga qo'shiladi.",liveT:"Jonli buyurtmalar",sound:"Ovoz",demoTg:"Demo tarix",on:"Jonli · ulangan",off:"Ulanmoqda…",st_new:"Yangi",st_accepted:"Qabul qilindi",st_onway:"Yo'lda",accept:"Qabul qilish",onway:"Yo'lga chiqdi",delivery:"Yetkazib berish",
       liveMode:"Ishchi rejim: stollar va yetkazib berish buyurtmalari serverda saqlanadi va Telegramga keladi.",tgConnect:"Telegramni ulash",
       pinS:"Egasining PIN-kodini kiriting",pinBtn:"Kirish",pinBad:"PIN noto'g'ri",pinNet:"Server javob bermadi. Internetni tekshiring.",
-      pays:{cash:"Kuryerga naqd",card:"Kuryerga karta/o'tkazma",click:"Click",payme:"Payme"},pay:"To'landi",cancel:"Bekor",done:"Bajarildi",callTxt:"Ofitsiantni chaqiryapti",empty:"Hozircha yangi buyurtma yo'q. Telefonda menyuni oching va buyurtma bering:",ago:"daq. oldin",now:"hozir",dishes:"Sotilgan taomlar",
+      pays:{cash:"Kuryerga naqd",card:"Kuryerga karta/o'tkazma",click:"Click",payme:"Payme"},pay:"To'landi",cancel:"Bekor",done:"Bajarildi",callTxt:"Ofitsiantni chaqiryapti",empty:"Hozircha yangi buyurtma yo'q. Yetkazib berish buyurtmalari shu yerda ko'rinadi:",ago:"daq. oldin",now:"hozir",dishes:"Sotilgan taomlar",
       day:"Bugun",week:"Hafta",month:"Oy",rev:"Tushum",orders:"Buyurtmalar",avg:"O'rtacha chek",guests:"Mehmonlar",vs:"oldingi davrga nisbatan",
       revT:"Tushum dinamikasi",revDay:"Soatlar bo'yicha, bugun",revWeek:"Kunlar bo'yicha, oxirgi 7 kun",revMonth:"Kunlar bo'yicha, oxirgi 30 kun",
       topT:"Eng ko'p sotilgan taomlar",topS:"Soni va tushum",ordT:"Oxirgi buyurtmalar",ordS:"Stol orqali kelgan",tblT:"Stollar bandligi",tblS:"Davr ichidagi tushum, stol bo'yicha",
       thTime:"Vaqt",thTable:"Stol",thItems:"Taomlar",thSum:"Summa",thSt:"Holat",paid:"To'landi",less:"Kam",more:"Ko'p",sum:"so'm",pcs:"ta",tbl:"Stol",
-      wd:["Ya","Du","Se","Ch","Pa","Ju","Sh"]},
+      wd:["Ya","Du","Se","Ch","Pa","Ju","Sh"],
+      packT:"Yetkazib berish: bir martalik idish",packS:"Belgilangan taomlarning har bir porsiyasiga 10 000 so'm idish qo'shiladi. Mijoz uni olib tashlay olmaydi.",save:"Saqlash",saved:"Saqlandi ✓",saveErr:"Saqlanmadi, qayta urinib ko'ring"},
   ru:{title:"Панель продаж · для владельца",demo:"В статистике есть демо-история. Заказы со столов видны вверху вживую; после «Оплачен» они попадают в статистику.",liveT:"Заказы вживую",sound:"Звук",demoTg:"Демо-история",on:"Онлайн · подключено",off:"Подключение…",st_new:"Новый",st_accepted:"Принят",st_onway:"В пути",accept:"Принять",onway:"Курьер выехал",delivery:"Доставка",
       liveMode:"Рабочий режим: заказы со столов и доставки хранятся на сервере и приходят в Telegram.",tgConnect:"Подключить Telegram",
       pinS:"Введите PIN-код владельца",pinBtn:"Войти",pinBad:"Неверный PIN",pinNet:"Сервер не ответил. Проверьте интернет.",
-      pays:{cash:"Наличными курьеру",card:"Картой/переводом курьеру",click:"Click",payme:"Payme"},pay:"Оплачен",cancel:"Отмена",done:"Готово",callTxt:"Зовёт официанта",empty:"Новых заказов пока нет. Откройте меню на телефоне и сделайте заказ:",ago:"мин. назад",now:"сейчас",dishes:"Продано блюд",
+      pays:{cash:"Наличными курьеру",card:"Картой/переводом курьеру",click:"Click",payme:"Payme"},pay:"Оплачен",cancel:"Отмена",done:"Готово",callTxt:"Зовёт официанта",empty:"Новых заказов пока нет. Заказы с сайта доставки появятся здесь:",ago:"мин. назад",now:"сейчас",dishes:"Продано блюд",
       day:"Сегодня",week:"Неделя",month:"Месяц",rev:"Выручка",orders:"Заказы",avg:"Средний чек",guests:"Гости",vs:"к прошлому периоду",
       revT:"Динамика выручки",revDay:"По часам, сегодня",revWeek:"По дням, последние 7 дней",revMonth:"По дням, последние 30 дней",
       topT:"Топ блюд",topS:"Количество и выручка",ordT:"Последние заказы",ordS:"Пришли со столов",tblT:"Загрузка столов",tblS:"Выручка за период по столам",
       thTime:"Время",thTable:"Стол",thItems:"Блюда",thSum:"Сумма",thSt:"Статус",paid:"Оплачен",less:"Меньше",more:"Больше",sum:"сум",pcs:"шт",tbl:"Стол",
-      wd:["Вс","Пн","Вт","Ср","Чт","Пт","Сб"]}
+      wd:["Вс","Пн","Вт","Ср","Чт","Пт","Сб"],
+      packT:"Доставка: одноразовая посуда",packS:"К каждой порции отмеченных блюд добавляется посуда за 10 000 сум. Гость не может её убрать.",save:"Сохранить",saved:"Сохранено ✓",saveErr:"Не сохранилось, попробуйте ещё раз"}
 };
 
 /* ===== demo data: 60 days of orders, seeded so the numbers stay the same on every load ===== */
@@ -348,7 +365,7 @@ function drawLive(){
   const calls = [...CALLS.values()].sort((a, b) => b.t - a.t);
   $('liveCount').textContent = open.length + calls.length;
   document.title = (open.length + calls.length ? `(${open.length + calls.length}) ` : '') + 'Xan Shatir — Savdo paneli';
-  const menuUrl = new URL('./?table=5', location.href).href;
+  const menuUrl = new URL('./delivery/', location.href).href;
   $('liveList').innerHTML = calls.map(c => `<div class="lv call"><div class="lvh"><b>${t.tbl} №${c.table}</b><span>${hm(c.t)} · ${ago(c.t)}</span><em><i class="fa-solid fa-bell-concierge"></i> ${t.callTxt}</em></div>
       <div class="lvf"><b></b><button class="p" data-act="done" data-id="${c.id}">${t.done}</button></div></div>`).join('')
     + open.map(o => { const d = o.delivery;
@@ -376,11 +393,27 @@ $('sound').onclick = () => {
 $('demoTg').classList.toggle('on', showDemo);
 $('demoTg').hidden = !!LIVE.API;   // the real panel shows real numbers only
 $('demoTg').onclick = () => { showDemo = !showDemo; $('demoTg').classList.toggle('on', showDemo); render(); };
+/* ===== disposable dishes for delivery: one tick per dish, saved on the server ===== */
+let packSet = null;
+function drawPack(){
+  if (!packSet) return;
+  $('packList').innerHTML = MENU.map(c => `<h3>${c.n[lang]}</h3><div class="pkl">${c.items.filter(d => d.p).map(d =>
+    `<label><input type="checkbox" data-pk="${esc(dishKey(d))}"${needsPack(c, d, packSet) ? ' checked' : ''}>${esc(d.n[lang] + (d.w ? ` (${d.w[lang]})` : ''))}</label>`).join('')}</div>`).join('');
+}
+$('packSave').onclick = async () => {
+  const set = {}; document.querySelectorAll('[data-pk]').forEach(x => set[x.dataset.pk] = x.checked);
+  $('packSave').disabled = true; $('packMsg').textContent = '';
+  try { packSet = await LIVE.savePack(set); $('packMsg').textContent = T[lang].saved; }
+  catch(e){ $('packMsg').textContent = T[lang].saveErr; }
+  $('packSave').disabled = false;
+};
+function loadPack(){ LIVE.pack().then(p => { packSet = p || {}; $('packBox').hidden = false; drawPack(); }).catch(() => {}); }
+
 function setState(on){ $('live').classList.toggle('on', on); $('live').querySelector('span').textContent = T[lang][on ? 'on' : 'off']; }
 // server mode: the owner's PIN opens the panel; demo mode: open to everyone
 function start(){
   LIVE.listen(onLive, setState, () => { try { sessionStorage.removeItem('xs_pin'); } catch(e){} location.reload(); });
-  if (LIVE.API){ $('tgLink').hidden = false; $('tgLink').href = LIVE.API.replace(/\/$/, '') + '/init?pin=' + encodeURIComponent(LIVE.pin); }
+  if (LIVE.API){ $('tgLink').hidden = false; $('tgLink').href = LIVE.API.replace(/\/$/, '') + '/init?pin=' + encodeURIComponent(LIVE.pin); loadPack(); }
 }
 if (!LIVE.API) start();
 else if (LIVE.pin) start();
@@ -393,7 +426,7 @@ $('lform').onsubmit = async e => {
 setInterval(drawLive, 30000);   // keep "N min ago" fresh
 
 document.querySelectorAll('#period button').forEach(b => b.onclick = () => { period = b.dataset.p; render(); });
-document.querySelectorAll('#lang button').forEach(b => b.onclick = () => { lang = b.dataset.l; try { localStorage.setItem('xs_admin_lang', lang); } catch(e){} render(); drawLive(); setState($('live').classList.contains('on')); });
+document.querySelectorAll('#lang button').forEach(b => b.onclick = () => { lang = b.dataset.l; try { localStorage.setItem('xs_admin_lang', lang); } catch(e){} render(); drawLive(); drawPack(); setState($('live').classList.contains('on')); });
 addEventListener('resize', () => render());
 render();
 drawLive();

@@ -32,6 +32,7 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
 .lang button.on{background:var(--gold);color:#0b0b0b}
 .hero{text-align:center;padding-top:20px}
 .logo{width:118px;height:118px;margin:0 auto 12px;filter:drop-shadow(0 16px 34px rgba(0,0,0,.5))}
+.logo img{display:block;width:100%;height:100%}
 h1{font:700 30px/1.1 'Cinzel',serif;letter-spacing:.06em}
 .sub{margin-top:5px;font:italic 500 16px 'Playfair Display',serif;color:var(--gold-lt)}
 .loc{margin-top:4px;font-size:13px;color:var(--muted)}
@@ -125,21 +126,6 @@ let lang = (() => { try { return localStorage.getItem('xs_lang') || 'uz'; } catc
 const dish = key => { const [c, i] = key.split('-'); const m = MENU.find(x => x.id === c); return m && m.items[+i]; };
 const fmt = p => p.toLocaleString('ru-RU').replace(/,/g, ' ') + ' ' + T[lang].sum;
 
-function logo(){
-  return `<svg viewBox="0 0 200 200" aria-label="Xan Shatir"><defs>
-    <linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#997A15"/><stop offset=".45" stop-color="#F3E5AB"/><stop offset=".7" stop-color="#D4AF37"/><stop offset="1" stop-color="#997A15"/></linearGradient>
-    <radialGradient id="lb" cx=".5" cy=".38" r=".65"><stop offset="0" stop-color="#11804f"/><stop offset="1" stop-color="#043a22"/></radialGradient></defs>
-    <circle cx="100" cy="100" r="98" fill="url(#lg)"/><circle cx="100" cy="100" r="91" fill="url(#lb)"/>
-    <circle cx="100" cy="100" r="86" fill="none" stroke="url(#lg)" stroke-width="2.4" stroke-dasharray=".1 6" stroke-linecap="round"/>
-    <circle cx="100" cy="100" r="81" fill="none" stroke="url(#lg)" stroke-width=".8"/>
-    <g fill="none" stroke="url(#lg)" stroke-width="2.2" stroke-linecap="round">
-      <path d="M58 96 Q60 62 100 50 Q140 62 142 96"/><path d="M52 96 H148"/>
-      <path d="M72 96 Q76 70 100 56 M128 96 Q124 70 100 56 M86 96 Q88 70 100 56 M114 96 Q112 70 100 56" stroke-width="1"/>
-      <circle cx="100" cy="50" r="5"/></g>
-    <text x="100" y="125" text-anchor="middle" font-family="Cinzel,serif" font-weight="700" font-size="19" letter-spacing="1.5" fill="url(#lg)">XAN SHATIR</text>
-    <text x="100" y="143" text-anchor="middle" font-family="Playfair Display,serif" font-style="italic" font-size="12" fill="#F3E5AB">restaurant</text></svg>`;
-}
-
 function render(){
   const t = T[lang], h = new Date().getHours(), open = h >= R.hours[0] && h < R.hours[1];
   document.documentElement.lang = lang;
@@ -153,7 +139,7 @@ function render(){
   $('soc').innerHTML = S.map(([ic, href], i) => `<a href="${href}"${href.startsWith('http') ? ' target="_blank" rel="noopener"' : ''}><i class="${ic}"></i>${t.soc[i]}</a>`).join('');
 }
 document.querySelectorAll('.lang button').forEach(b => b.onclick = () => { lang = b.dataset.l; try { localStorage.setItem('xs_lang', lang); } catch(e){} render(); });
-$('logo').innerHTML = logo();
+$('logo').innerHTML = '<img src="../img/logo.webp" alt="Xan Shatir">';
 render();
 </script>
 </body>

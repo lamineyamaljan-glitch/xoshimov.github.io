@@ -19,6 +19,8 @@
      PATCH  /orders/:id          status {s: accepted | onway | paid | cancel}  (PIN)
      DELETE /calls/:id           waiter came                                   (PIN)
      GET    /sales?months=2      paid orders of the last months                (PIN)
+     GET    /pack                which dishes go with disposable dishes in delivery {"Dish name": true|false}
+     PUT    /pack                save that list                                (PIN)
      GET    /init?pin=…          connect the bot (sets the webhook) and show the link to subscribe
      POST   /tg                  Telegram webhook ("/start <PIN>" subscribes a chat)
 */
@@ -28,7 +30,7 @@ const PAYS = { cash: 'Наличными курьеру', card: 'Картой/п
 
 const cors = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'GET,POST,PATCH,DELETE,OPTIONS',
+  'Access-Control-Allow-Methods': 'GET,POST,PUT,PATCH,DELETE,OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type,X-Pin',
   'Access-Control-Max-Age': '86400'
 };
@@ -148,14 +150,22 @@ export default {
         return json({ ok: true });
       }
 
+      if (path === '/pack' && M === 'GET') return json(await getJSON(env, 'pack', {}));
+
       // the sales panel
-      const panel = path === '/live' || path === '/sales' || /^\/(orders|calls)\//.test(path);
+      const panel = path === '/live' || path === '/sales' || path === '/pack' || /^\/(orders|calls)\//.test(path);
       if (panel && !authed(req, env)) return fail('wrong PIN', 401);
       if (path === '/live' && M === 'GET') return json(await getOpen(env));
       if (path === '/sales' && M === 'GET'){
         const n = Math.max(1, Math.min(12, +url.searchParams.get('months') || 2)), out = [];
         for (let i = n - 1; i >= 0; i--){ const d = new Date(Date.now() + 5 * 36e5); d.setUTCDate(1); d.setUTCMonth(d.getUTCMonth() - i); out.push(...await getJSON(env, 'sales:' + d.toISOString().slice(0, 7), [])); }
         return json(out);
+      }
+      if (path === '/pack' && M === 'PUT'){
+        const b = await req.json(), pack = {};
+        for (const [k, v] of Object.entries(b && typeof b === 'object' ? b : {}).slice(0, 300)) if (str(k, 100)) pack[str(k, 100)] = !!v;
+        await putJSON(env, 'pack', pack);
+        return json(pack);
       }
       let m = path.match(/^\/orders\/([a-z0-9]+)$/);
       if (m && M === 'PATCH'){

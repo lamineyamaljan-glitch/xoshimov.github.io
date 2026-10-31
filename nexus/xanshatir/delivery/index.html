@@ -25,7 +25,7 @@ button{font:inherit;color:inherit;border:0;background:none;cursor:pointer}
 header{position:sticky;top:0;z-index:10;background:rgba(4,20,12,.86);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
 header .wrap{display:flex;align-items:center;gap:12px;height:64px}
 .brand{display:flex;align-items:center;gap:10px;margin-right:auto}
-.brand svg{width:40px;height:40px}
+.brand img{display:block;width:42px;height:42px}
 .brand b{font:700 17px 'Cinzel',serif;letter-spacing:.06em}
 .brand small{display:block;font:600 10px 'Space Grotesk';letter-spacing:.22em;color:var(--gold);text-transform:uppercase}
 .lang{display:flex;border:1px solid var(--line);border-radius:999px;padding:2px}
@@ -77,6 +77,9 @@ header .wrap{display:flex;align-items:center;gap:12px;height:64px}
 .dish .ft span{font:700 15px 'Space Grotesk';color:var(--gold-lt)}
 .dish .ft small{display:block;font:400 11px 'Inter';color:var(--muted)}
 .ask{font-size:12px;color:var(--muted)}
+.dish .pk{display:block;margin-top:6px;font-size:11.5px;color:var(--muted)}
+.sum .pkn{margin-top:-2px;font-size:12px;color:var(--muted)}
+.sum i{color:var(--gold);margin-right:6px;font-size:12px}
 .add{flex:none;width:36px;height:36px;border-radius:50%;background:var(--gold);color:#0b0b0b;display:grid;place-items:center;font-size:13px;transition:transform .15s}
 .add:active{transform:scale(.9)}
 .qty{flex:none;display:flex;align-items:center;border-radius:999px;border:1px solid var(--gold);background:rgba(4,20,12,.7)}
@@ -228,7 +231,8 @@ const T = {
       sendErr:"Yuborilmadi. Internetni tekshiring yoki qo'ng'iroq qiling",okT:"Buyurtma qabul qilindi!",okS:"Operator tez orada qo'ng'iroq qiladi. Taxminiy yetkazish vaqti: {t} daqiqa.",
       okNo:"Buyurtma",okMore:"Menyuga qaytish",i1:"Har kuni 10:00–23:00",i1s:"Buyurtmalar har kuni qabul qilinadi.",i2:"Chirchiq bo'ylab",
       i2s:"Yetkazish {f}, {ff} dan — bepul. Taxminan {t} daqiqa.",i3:"Telefon orqali buyurtma",foot:"Xan Shatir restorani, Chirchiq",menuLink:"Restoran menyusi",
-      made:"Sayt:",deliveryItem:"Доставка",
+      made:"Sayt:",deliveryItem:"Доставка",packItem:"Одноразовая посуда",
+      pack:"Bir martalik idishlar",packS:"Har bir porsiya uchun {f}, majburiy. Non va ichimliklar idishsiz.",packDish:"+ idish {f}",chPack:"Idish {f} / porsiya",
       agree:"Men <a href=\"{o}\" target=\"_blank\">ommaviy oferta</a> shartlarini qabul qilaman va <a href=\"{p}\" target=\"_blank\">maxfiylik siyosati</a>ga muvofiq shaxsiy ma'lumotlarimni qayta ishlashga rozilik beraman.",
       needAgree:"Buyurtma uchun oferta va ma'lumotlarni qayta ishlashga rozilik kerak",
       lOferta:"Ommaviy oferta",lPrivacy:"Maxfiylik siyosati",lDelivery:"Yetkazib berish va qaytarish",sName:"Sotuvchi",sInn:"STIR"},
@@ -245,7 +249,8 @@ const T = {
       sendErr:"Не отправилось. Проверьте интернет или позвоните нам",okT:"Заказ принят!",okS:"Оператор скоро перезвонит. Примерное время доставки: {t} минут.",
       okNo:"Заказ",okMore:"Вернуться в меню",i1:"Ежедневно 10:00–23:00",i1s:"Заказы принимаем каждый день.",i2:"По всему Чирчику",
       i2s:"Доставка {f}, от {ff} — бесплатно. Примерно {t} минут.",i3:"Заказ по телефону",foot:"Ресторан Xan Shatir, Чирчик",menuLink:"Меню ресторана",
-      made:"Сайт:",deliveryItem:"Доставка",
+      made:"Сайт:",deliveryItem:"Доставка",packItem:"Одноразовая посуда",
+      pack:"Одноразовая посуда",packS:"{f} за каждую порцию, обязательно. Хлеб и напитки — без посуды.",packDish:"+ посуда {f}",chPack:"Посуда {f} / порция",
       agree:"Я принимаю условия <a href=\"{o}\" target=\"_blank\">публичной оферты</a> и даю согласие на обработку моих персональных данных в соответствии с <a href=\"{p}\" target=\"_blank\">политикой конфиденциальности</a>.",
       needAgree:"Чтобы оформить заказ, нужно согласие с офертой и обработкой данных",
       lOferta:"Публичная оферта",lPrivacy:"Политика конфиденциальности",lDelivery:"Доставка и возврат",sName:"Продавец",sInn:"ИНН"}
@@ -262,31 +267,23 @@ let view = 'cart', lastNo = '';
 const t = k => T[lang][k];
 const fmt = p => p.toLocaleString('ru-RU').replace(/,/g, ' ') + ' ' + t('sum');
 const dish = key => { const [c, i] = key.split('-'); const m = MENU.find(x => x.id === c); return m && m.items[+i]; };
+const cat = key => MENU.find(x => x.id === key.split('-')[0]);
 const dname = d => d.n[lang] + (d.w ? ` (${d.w[lang]})` : '');
 const isOpen = () => { const h = new Date().getHours(); return h >= R.hours[0] && h < R.hours[1]; };
 const keys = () => Object.keys(cart).filter(k => cart[k] > 0 && dish(k) && dish(k).p);
 const subtotal = () => keys().reduce((s, k) => s + dish(k).p * cart[k], 0);
-const feeOf = s => s >= R.freeFrom ? 0 : R.fee;
+const feeOf = s => s >= R.freeFrom ? 0 : R.fee;   // free delivery and the minimum order count the dishes only
+// disposable dishes: the owner's ticks from the panel, until they load each category's default
+let PACK = null;
+const packN = () => keys().reduce((s, k) => s + (needsPack(cat(k), dish(k), PACK) ? cart[k] : 0), 0);
 
-// their logo: green medallion, beaded gold rim, yurt dome
-function logo(){
-  return `<svg viewBox="0 0 200 200" aria-label="Xan Shatir"><defs>
-    <linearGradient id="lg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#997A15"/><stop offset=".45" stop-color="#F3E5AB"/><stop offset=".7" stop-color="#D4AF37"/><stop offset="1" stop-color="#997A15"/></linearGradient>
-    <radialGradient id="lb" cx=".5" cy=".38" r=".65"><stop offset="0" stop-color="#11804f"/><stop offset="1" stop-color="#043a22"/></radialGradient></defs>
-    <circle cx="100" cy="100" r="98" fill="url(#lg)"/><circle cx="100" cy="100" r="91" fill="url(#lb)"/>
-    <circle cx="100" cy="100" r="86" fill="none" stroke="url(#lg)" stroke-width="2.4" stroke-dasharray=".1 6" stroke-linecap="round"/>
-    <g fill="none" stroke="url(#lg)" stroke-width="3" stroke-linecap="round">
-      <path d="M58 110 Q60 70 100 56 Q140 70 142 110"/><path d="M50 110 H150"/>
-      <path d="M72 110 Q76 80 100 62 M128 110 Q124 80 100 62" stroke-width="1.6"/><circle cx="100" cy="56" r="6"/></g>
-    <text x="100" y="146" text-anchor="middle" font-family="Cinzel,serif" font-weight="700" font-size="22" fill="url(#lg)">XS</text></svg>`;
-}
 
 function render(){
   document.documentElement.lang = lang;
   document.querySelectorAll('[data-i]').forEach(el => el.textContent = t(el.dataset.i));
   document.querySelectorAll('.lang button').forEach(b => b.classList.toggle('on', b.dataset.l === lang));
   $('chips').innerHTML = [['fa-clock', `${R.time} ${t('chT')}`], ['fa-motorcycle', `${t('chFee')} ${fmt(R.fee)}`], ['fa-gift', t('chFree').replace('{f}', fmt(R.freeFrom))],
-    ['fa-calendar-check', `${t('chHours')} ${R.hours[0]}:00–${R.hours[1]}:00`]]
+    ['fa-box', t('chPack').replace('{f}', fmt(PACK_FEE))], ['fa-calendar-check', `${t('chHours')} ${R.hours[0]}:00–${R.hours[1]}:00`]]
     .map(([i, s]) => `<span><i class="fa-solid ${i}"></i>${s}</span>`).join('');
   $('closed').textContent = t('closed').replace('{h}', R.hours[0]); $('closed').classList.toggle('on', !isOpen());
   $('i1s').textContent = t('i1s');
@@ -303,6 +300,7 @@ function card(c, d, i){
   const k = `${c.id}-${i}`, q = cart[k] || 0;
   return `<article class="dish"><div class="im">${d.img ? `<img src="../img/${d.img}.webp" alt="${esc(d.n[lang])}" loading="lazy">` : `<i class="fa-solid ${c.icon}"></i>`}${d.tag === 'hit' ? `<b>${lang === 'uz' ? 'XIT' : 'ХИТ'}</b>` : ''}</div>
     <div class="bd"><h3>${esc(dname(d))}</h3>${d.d && d.d[lang] ? `<p>${esc(d.d[lang])}</p>` : ''}
+    ${d.p && needsPack(c, d, PACK) ? `<small class="pk"><i class="fa-solid fa-box"></i> ${t('packDish').replace('{f}', fmt(PACK_FEE))}</small>` : ''}
     <div class="ft" data-ft="${k}">${foot(d, k, q)}</div></div></article>`;
 }
 const foot = (d, k, q) => d.p ? `<span>${fmt(d.p)}</span>${q ? `<div class="qty"><button data-q="${k}:-1" aria-label="−"><i class="fa-solid fa-minus"></i></button><b>${q}</b><button data-q="${k}:1" aria-label="+"><i class="fa-solid fa-plus"></i></button></div>`
@@ -318,7 +316,7 @@ function setQty(k, dq){
 function drawCart(){
   const n = keys().reduce((s, k) => s + cart[k], 0), s = subtotal();
   $('cartN').textContent = n || '';
-  $('barN').textContent = `${n} ${t('items')}`; $('barSum').textContent = fmt(s + (n ? feeOf(s) : 0));
+  $('barN').textContent = `${n} ${t('items')}`; $('barSum').textContent = fmt(s + packN() * PACK_FEE + (n ? feeOf(s) : 0));
   $('bar').classList.toggle('on', n > 0 && !$('drawer').classList.contains('on'));
   if ($('drawer').classList.contains('on') && view === 'cart') drawDrawer();
 }
@@ -333,14 +331,16 @@ function drawDrawer(){
   $('dTitle').textContent = t('cartT');
   const K = keys();
   if (!K.length){ $('dBody').innerHTML = `<div class="empty"><i class="fa-solid fa-bag-shopping"></i><b>${t('empty')}</b><p>${t('emptyS')}</p></div>`; return; }
-  const s = subtotal(), fee = feeOf(s), me = store('xs_dme') || {};
+  const s = subtotal(), fee = feeOf(s), pn = packN(), pack = pn * PACK_FEE, me = store('xs_dme') || {};
   const keep = id => { const el = $(id); return el ? el.value : null; };   // keep what was typed when the drawer redraws
   const v = { name: keep('fName') ?? me.name ?? '', phone: keep('fPhone') ?? me.phone ?? '+998 ', address: keep('fAddr') ?? me.address ?? '', comment: keep('fCom') ?? '', agree: !!($('fAgree') && $('fAgree').checked), pay: document.querySelector('[name=pay]:checked')?.value || 'cash' };
   $('dBody').innerHTML = `${K.map(k => { const d = dish(k);
       return `<div class="ci">${d.img ? `<img src="../img/${d.img}.webp" alt="">` : `<span class="ic"><i class="fa-solid fa-utensils"></i></span>`}<div><b>${esc(dname(d))}</b><small>${fmt(d.p * cart[k])}</small></div>
         <div class="qty"><button data-q="${k}:-1" aria-label="−"><i class="fa-solid fa-minus"></i></button><b>${cart[k]}</b><button data-q="${k}:1" aria-label="+"><i class="fa-solid fa-plus"></i></button></div></div>`; }).join('')}
-    <div class="sum"><div><span>${t('subtotal')}</span><span>${fmt(s)}</span></div><div><span>${t('fee')}</span><span>${fee ? fmt(fee) : t('free')}</span></div>
-      <div class="tot"><span>${t('total')}</span><span>${fmt(s + fee)}</span></div></div>
+    <div class="sum"><div><span>${t('subtotal')}</span><span>${fmt(s)}</span></div>
+      ${pn ? `<div><span><i class="fa-solid fa-box"></i>${t('pack')} × ${pn}</span><span>${fmt(pack)}</span></div><div class="pkn">${t('packS').replace('{f}', fmt(PACK_FEE))}</div>` : ''}
+      <div><span>${t('fee')}</span><span>${fee ? fmt(fee) : t('free')}</span></div>
+      <div class="tot"><span>${t('total')}</span><span>${fmt(s + pack + fee)}</span></div></div>
     <div class="free">${fee ? `${t('freeLeft')} ${fmt(R.freeFrom - s)}` : t('freeOk')}<i style="--p:${Math.min(100, s / R.freeFrom * 100)}%"></i></div>
     <form class="fm" id="fm" novalidate>
       <h4>${t('who')}</h4>
@@ -357,7 +357,7 @@ function drawDrawer(){
       </div>
       <label class="agree" id="agreeBox"><input type="checkbox" id="fAgree"${v.agree ? ' checked' : ''}><span>${t('agree').replace('{o}', legal('oferta')).replace('{p}', legal('privacy'))}</span></label>
       ${s < R.minOrder ? `<div class="free">${t('minLeft').replace('{m}', fmt(R.minOrder)).replace('{l}', fmt(R.minOrder - s))}</div>` : ''}
-      <button class="btn" id="send"${s < R.minOrder ? ' disabled' : ''}><i class="fa-solid fa-paper-plane"></i>${t('send')} · ${fmt(s + fee)}</button>
+      <button class="btn" id="send"${s < R.minOrder ? ' disabled' : ''}><i class="fa-solid fa-paper-plane"></i>${t('send')} · ${fmt(s + pack + fee)}</button>
       <div class="note">${t('noteSend')}</div>
     </form>`;
 }
@@ -374,6 +374,7 @@ async function send(){
   if (!$('fAgree').checked){ $('agreeBox').classList.add('bad'); toast(t('needAgree')); return; }
   const s = subtotal(), fee = feeOf(s);
   const items = keys().map(k => { const d = dish(k); return [d.n.ru + (d.w ? ` (${d.w.ru})` : ''), cart[k], d.p]; });
+  const pn = packN(); if (pn) items.push([t('packItem'), pn, PACK_FEE]);
   if (fee) items.push([t('deliveryItem'), 1, fee]);
   const id = LIVE.id(), btn = $('send'); btn.disabled = true;
   try {
@@ -407,7 +408,8 @@ addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
 const spy = new IntersectionObserver(es => es.forEach(x => { if (x.isIntersecting){ const id = x.target.id.slice(2);
   document.querySelectorAll('#tabs button').forEach(b => b.classList.toggle('on', b.dataset.tab === id)); } }), { rootMargin: '-140px 0px -60% 0px' });
 
-$('logo').innerHTML = logo();
+$('logo').innerHTML = '<img src="../img/logo.webp" alt="Xan Shatir">';
+LIVE.pack().catch(() => ({})).then(p => { PACK = p || {}; render(); if ($('drawer').classList.contains('on') && view === 'cart') drawDrawer(); });
 render();
 </script>
 </body>

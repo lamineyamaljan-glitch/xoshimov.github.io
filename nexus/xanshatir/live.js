@@ -19,6 +19,10 @@ const LIVE = {
     return data;
   },
 
+  // which dishes go with disposable dishes in delivery (see needsPack in menu.js); the demo channel keeps no settings
+  pack: () => LIVE.API ? LIVE.call("/pack") : Promise.resolve({}),
+  savePack: set => LIVE.call("/pack", { method: "PUT", body: set }),
+
   async send(data){
     if (!LIVE.API){
       const r = await fetch(LIVE.url, { method: "POST", body: JSON.stringify(data) });
