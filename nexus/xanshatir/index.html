@@ -153,7 +153,7 @@ body.lock{overflow:hidden}
   <div class="top in">
     <div class="table" id="table"><i class="fa-solid fa-chair"></i><span id="tableTxt"></span></div>
     <div class="open" id="openBox"><i></i><span data-i="open"></span></div>
-    <div class="lang"><button data-l="uz">UZ</button><button data-l="ru">RU</button><button data-l="en">EN</button></div>
+    <div class="lang"><button data-l="uz">UZ</button><button data-l="ru">RU</button><button data-l="en">EN</button><button data-l="kk">KZ</button></div>
   </div>
 
   <div class="hero">
@@ -209,7 +209,7 @@ body.lock{overflow:hidden}
 
 <div class="svc on" id="svc" role="dialog" aria-modal="true" aria-labelledby="svcT"><div class="box">
   <img src="img/logo.webp" alt="Xan Shatir">
-  <div class="lang"><button data-l="uz">UZ</button><button data-l="ru">RU</button><button data-l="en">EN</button></div>
+  <div class="lang"><button data-l="uz">UZ</button><button data-l="ru">RU</button><button data-l="en">EN</button><button data-l="kk">KZ</button></div>
   <h3 id="svcT"><span data-i="svcT"></span><b>15%</b></h3>
   <p data-i="svcS"></p>
   <button class="btn" id="svcOk"><i class="fa-solid fa-check"></i><span data-i="svcOk"></span></button>
@@ -258,7 +258,16 @@ const T = {
       bookMsg:"Hello! I'd like to book a table.",bookNeed:"Enter your name and phone",
       revT:"Did you enjoy it?",revS:"Rate us, it means a lot.",thanks:"Thank you! ❤️",
       made:"Digital menu by",demo:"Prototype · prices from the Instagram menu",ask:"Ask for price",
-      sum:"UZS",svcT:"Service charge",svcS:"A 15% service charge is added to the bill in our restaurant.",svcOk:"I agree"}
+      sum:"UZS",svcT:"Service charge",svcS:"A 15% service charge is added to the bill in our restaurant.",svcOk:"I agree"},
+  kk:{open:"Ашық",closed:"Жабық",sub:"Шыршықтағы ең дәмді бешбармақ",loc:"Шыршық қаласы",
+      q:["Қоңырау","Telegram","Instagram","Карта"],table:"ҮСТЕЛ №",
+      sigTag:"Аспазшы таңдауы",sigName:"Бешбармақ",sigDesc:"Мейрамхананың мақтанышы. Шыршықтағы ең дәмді бешбармақ.",
+      lOferta:"Жария оферта",lPrivacy:"Құпиялылық саясаты",lDelivery:"Жеткізу және қайтару",dlvT:"Үйге жеткізу",dlvS:"Сүйікті тағамдарыңызды үйге тапсырыс беріңіз",wifi:"Wi-Fi құпиясөзі",copy:"Көшіру",copied:"Көшірілді ✓",
+      bookT:"Үстел брондау",bookS:"Бір минутта, кезексіз.",name:"Атыңыз",people:"адам",bookBtn:"Брондау",
+      bookMsg:"Сәлеметсіз бе! Үстел брондағым келеді.",bookNeed:"Атыңыз бен телефонды енгізіңіз",
+      revT:"Сізге ұнады ма?",revS:"Бізді бағалаңыз, бұл біз үшін өте маңызды.",thanks:"Рахмет! ❤️",
+      made:"Электронды мәзір:",demo:"Прототип · бағалар Instagram мәзірінен",ask:"Бағасын сұраңыз",
+      sum:"сум",svcT:"Қызмет көрсету",svcS:"Мейрамханамызда шотқа 15% қызмет ақысы қосылады.",svcOk:"Келісемін"}
 };
 
 const $ = id => document.getElementById(id);

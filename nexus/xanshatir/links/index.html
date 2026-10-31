@@ -77,7 +77,7 @@ h1{font:700 30px/1.1 'Cinzel',serif;letter-spacing:.06em}
 </head>
 <body>
 <div class="wrap">
-  <div class="top"><div class="open" id="open"><i></i><span></span></div><div class="lang"><button data-l="uz">UZ</button><button data-l="ru">RU</button></div></div>
+  <div class="top"><div class="open" id="open"><i></i><span></span></div><div class="lang"><button data-l="uz">UZ</button><button data-l="ru">RU</button><button data-l="kk">KZ</button></div></div>
 
   <div class="hero in">
     <div class="logo" id="logo"></div>
@@ -119,7 +119,11 @@ const T = {
   ru:{sub:"Самый вкусный бешбармак в Чирчике",loc:"город Чирчик",open:"Сейчас открыто · до 22:00",closed:"Сейчас закрыто · откроемся в 10:00",
       dl:["Доставка","Закажите домой — привезём горячим"],menu:["Меню","Все блюда и цены"],book:["Забронировать стол","За минуту, без звонков"],
       call:["Позвонить","+998 95 837 88 08"],popular:"Популярные блюда",contact:"Контакты",soc:["Telegram","Instagram","Карта","Звонок"],
-      lOferta:"Публичная оферта",lPrivacy:"Политика конфиденциальности",lDelivery:"Доставка и возврат",hoursT:"Ежедневно 10:00–22:00",hoursS:"Доставка в это же время",made:"Сайт:",sum:"сум"}
+      lOferta:"Публичная оферта",lPrivacy:"Политика конфиденциальности",lDelivery:"Доставка и возврат",hoursT:"Ежедневно 10:00–22:00",hoursS:"Доставка в это же время",made:"Сайт:",sum:"сум"},
+  kk:{sub:"Шыршықтағы ең дәмді бешбармақ",loc:"Шыршық қаласы",open:"Қазір ашық · 22:00-ге дейін",closed:"Қазір жабық · 10:00-де ашыламыз",
+      dl:["Жеткізу","Үйге тапсырыс беріңіз — ыстықтай жеткіземіз"],menu:["Мәзір","Барлық тағамдар мен бағалар"],book:["Үстел брондау","Бір минутта, қоңыраусыз"],
+      call:["Қоңырау шалу","+998 95 837 88 08"],popular:"Танымал тағамдар",contact:"Байланыс",soc:["Telegram","Instagram","Карта","Қоңырау"],
+      lOferta:"Жария оферта",lPrivacy:"Құпиялылық саясаты",lDelivery:"Жеткізу және қайтару",hoursT:"Күн сайын 10:00–22:00",hoursS:"Жеткізу де осы уақытта",made:"Сайт:",sum:"сум"}
 };
 const $ = id => document.getElementById(id);
 let lang = (() => { try { return localStorage.getItem('xs_lang') || 'uz'; } catch(e){ return 'uz'; } })();
