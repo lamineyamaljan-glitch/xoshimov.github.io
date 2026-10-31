@@ -210,7 +210,7 @@ body.lock{overflow:hidden}
 /* ===== DELIVERY SETTINGS (change here) ===== */
 const R = {
   phone: "+998958378808",
-  hours: [10, 23],        // orders are taken from 10:00 to 23:00
+  hours: [10, 22],        // orders are taken from 10:00 to 22:00
   base: 7000,             // delivery starts at this price, so'm
   perKm: 5000,            // plus this for every km (straight line from the restaurant, rounded up)
   place: [41.506529, 69.623540],   // the restaurant on the map [lat, lon] (Tiklanish 88, Google Maps); null = the operator names the delivery price
@@ -233,7 +233,7 @@ const T = {
       pay:"To'lov",cash:"Naqd",card:"Karta orqali",cardS:"o'tkazma yoki terminal",soon:"tez kunda",send:"Buyurtma berish",
       noteSend:"Operator 5 daqiqa ichida qo'ng'iroq qilib, buyurtmani tasdiqlaydi.",need:"Ism, telefon va manzilni kiriting",
       sendErr:"Yuborilmadi. Internetni tekshiring yoki qo'ng'iroq qiling",okT:"Buyurtma qabul qilindi!",okS:"Operator tez orada qo'ng'iroq qiladi. Taxminiy yetkazish vaqti: {t} daqiqa.",
-      okNo:"Buyurtma",okMore:"Menyuga qaytish",i1:"Har kuni 10:00–23:00",i1s:"Buyurtmalar har kuni qabul qilinadi.",i2:"Chirchiq bo'ylab",
+      okNo:"Buyurtma",okMore:"Menyuga qaytish",i1:"Har kuni 10:00–22:00",i1s:"Buyurtmalar har kuni qabul qilinadi.",i2:"Chirchiq bo'ylab",
       i2s:"Yetkazish {b} + har km uchun {k}, {ff} dan — bepul. Taxminan {t} daqiqa.",
       km:"km",feeOp:"operator aytadi",kmRule:"{b} + har km uchun {k}",kmBtn:"Masofani joylashuv bo'yicha hisoblash",kmAgain:"Qayta hisoblash",
       km_wait:"Aniqlanmoqda…",km_err:"Joylashuvni aniqlab bo'lmadi — narxni operator aytadi",km_far:"Manzil uzoq — narxni operator aniqlaydi",i3:"Telefon orqali buyurtma",foot:"Xan Shatir restorani, Chirchiq",menuLink:"Restoran menyusi",
@@ -253,7 +253,7 @@ const T = {
       pay:"Оплата",cash:"Наличными",card:"Картой",cardS:"переводом или терминалом",soon:"скоро",send:"Оформить заказ",
       noteSend:"Оператор перезвонит в течение 5 минут и подтвердит заказ.",need:"Введите имя, телефон и адрес",
       sendErr:"Не отправилось. Проверьте интернет или позвоните нам",okT:"Заказ принят!",okS:"Оператор скоро перезвонит. Примерное время доставки: {t} минут.",
-      okNo:"Заказ",okMore:"Вернуться в меню",i1:"Ежедневно 10:00–23:00",i1s:"Заказы принимаем каждый день.",i2:"По всему Чирчику",
+      okNo:"Заказ",okMore:"Вернуться в меню",i1:"Ежедневно 10:00–22:00",i1s:"Заказы принимаем каждый день.",i2:"По всему Чирчику",
       i2s:"Доставка {b} + {k} за каждый км, от {ff} — бесплатно. Примерно {t} минут.",
       km:"км",feeOp:"назовёт оператор",kmRule:"{b} + {k} за каждый км",kmBtn:"Рассчитать по геолокации",kmAgain:"Пересчитать",
       km_wait:"Определяем…",km_err:"Не удалось определить место — стоимость назовёт оператор",km_far:"Адрес далеко — стоимость уточнит оператор",i3:"Заказ по телефону",foot:"Ресторан Xan Shatir, Чирчик",menuLink:"Меню ресторана",
