@@ -211,6 +211,8 @@ section.block{padding:110px 0;position:relative}
 .lg-cav i::after{content:"";position:absolute;inset:7px;background:#d8bd8a}
 .lg-cav small{letter-spacing:.26em;padding-left:0;color:#d8bd8a;opacity:1}
 .lg-demo{flex-direction:row;gap:12px;font:800 24px 'Space Grotesk',sans-serif}
+.lg-ava{gap:12px;font:700 20px 'Space Grotesk',sans-serif}
+.lg-ava img{width:110px;height:110px;border-radius:50%;object-fit:cover;box-shadow:0 14px 30px -10px rgba(0,0,0,.7)}
 .lg-demo span{width:52px;height:52px;border-radius:15px;background:#ff5a1f;display:grid;place-items:center;font:800 26px 'Space Grotesk';box-shadow:0 10px 26px -8px #ff5a1f}
 .lg-next span{width:84px;height:84px;border-radius:50%;border:2px dashed rgba(243,229,171,.6);display:grid;place-items:center;font:300 46px 'Space Grotesk';color:#f3e5ab}
 .cover .tag{position:absolute;top:16px;left:16px;padding:6px 14px;border-radius:999px;background:rgba(8,12,10,.9);border:1px solid rgba(212,175,55,.3);color:var(--gold);font:400 10px 'Space Grotesk',sans-serif;letter-spacing:.2em;text-transform:uppercase;transform:translateZ(30px)}
@@ -437,8 +439,8 @@ const LOGOS = {
   cavalier: `<div class="lg lg-cav"><i></i>CAVALIER<small>Men's wear · Tashkent</small></div>`,
   demo: `<div class="lg lg-demo"><span>D</span>Demo Store</div>`,
   next: `<div class="lg lg-next"><span>+</span></div>`,
-  xan: `<div class="lg lg-demo"><span style="background:#b45309;box-shadow:0 10px 26px -8px #b45309">X</span>Xan Shatir</div>`,
-  kab: `<div class="lg lg-demo"><span style="background:#be185d;box-shadow:0 10px 26px -8px #be185d">K</span>K.A.B cosmetics</div>`
+  xan: `<div class="lg lg-ava"><img src="img/logo-xan.webp" alt="Xan Shatir" width="110" height="110" loading="lazy">Xan Shatir</div>`,
+  kab: `<div class="lg lg-ava"><img src="img/logo-kab.webp" alt="K.A.B cosmetics" width="110" height="110" loading="lazy">K.A.B cosmetics</div>`
 };
 const PROJECTS = [
   { tag: "NFC · Ресторан", logo: "xan", title: { ru: "Xan Shatir — NFC-меню и доставка", uz: "Xan Shatir — NFC-menyu va yetkazib berish", en: "Xan Shatir — NFC Menu & Delivery" },
