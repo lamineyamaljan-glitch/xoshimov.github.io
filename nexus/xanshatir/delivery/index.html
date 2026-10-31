@@ -80,6 +80,7 @@ header .wrap{display:flex;align-items:center;gap:12px;height:64px}
 .dish .pk{display:block;margin-top:6px;font-size:11.5px;color:var(--muted)}
 .sum .pkn{margin-top:-2px;font-size:12px;color:var(--muted)}
 .sum i{color:var(--gold);margin-right:6px;font-size:12px}
+.sum .geo{display:flex;align-items:center;justify-content:center;gap:4px;width:100%;margin:2px 0 4px;padding:10px;border-radius:12px;border:1px solid var(--gold);background:rgba(212,175,55,.08);color:var(--gold-lt);font-size:13px;font-weight:600}
 .add{flex:none;width:36px;height:36px;border-radius:50%;background:var(--gold);color:#0b0b0b;display:grid;place-items:center;font-size:13px;transition:transform .15s}
 .add:active{transform:scale(.9)}
 .qty{flex:none;display:flex;align-items:center;border-radius:999px;border:1px solid var(--gold);background:rgba(4,20,12,.7)}
@@ -210,8 +211,11 @@ body.lock{overflow:hidden}
 const R = {
   phone: "+998958378808",
   hours: [10, 23],        // orders are taken from 10:00 to 23:00
-  fee: 15000,             // delivery price in Chirchiq, so'm
-  freeFrom: 250000,       // free delivery from this order total
+  base: 7000,             // delivery starts at this price, so'm
+  perKm: 5000,            // plus this for every km (straight line from the restaurant, rounded up)
+  place: [41.506529, 69.623540],   // the restaurant on the map [lat, lon] (Tiklanish 88, Google Maps); null = the operator names the delivery price
+  maxKm: 25,              // farther than this the operator names the price
+  freeFrom: 500000,       // free delivery from this order total
   minOrder: 50000,        // smallest order
   time: "40–60"           // minutes
 };
@@ -220,7 +224,7 @@ const R = {
 const T = {
   uz:{tag:"Yetkazib berish",cart:"Savat",kicker:"Chirchiq bo'ylab yetkazib berish",h1:"Xan Shatir taomlari — uyingizgacha",
       lead:"Beshbarmoq, manti, shashlik va salatlar issiq holda yetkaziladi. Buyurtma bering — operator qo'ng'iroq qilib tasdiqlaydi.",
-      sig:"Beshbarmoq — oshpaz tavsiyasi",chT:"daqiqa",chFee:"Yetkazish",chFree:"{f} dan bepul",chMin:"Minimal buyurtma",chHours:"Har kuni",
+      sig:"Beshbarmoq — oshpaz tavsiyasi",chT:"daqiqa",chFee:"Yetkazish {b} + {k}/km",chFree:"{f} dan bepul",chMin:"Minimal buyurtma",chHours:"Har kuni",
       closed:"Hozir yopiqmiz. Buyurtmani qoldiring — ertalab {h}:00 da qabul qilamiz.",
       ask:"Narxini so'rang",add:"Qo'shish",added:"Savatga qo'shildi",sum:"so'm",items:"ta taom",checkout:"Rasmiylashtirish",
       cartT:"Savat",empty:"Savat hozircha bo'sh",emptyS:"Menyudan taom tanlang",subtotal:"Taomlar",fee:"Yetkazib berish",free:"bepul",total:"Jami",
@@ -230,7 +234,9 @@ const T = {
       noteSend:"Operator 5 daqiqa ichida qo'ng'iroq qilib, buyurtmani tasdiqlaydi.",need:"Ism, telefon va manzilni kiriting",
       sendErr:"Yuborilmadi. Internetni tekshiring yoki qo'ng'iroq qiling",okT:"Buyurtma qabul qilindi!",okS:"Operator tez orada qo'ng'iroq qiladi. Taxminiy yetkazish vaqti: {t} daqiqa.",
       okNo:"Buyurtma",okMore:"Menyuga qaytish",i1:"Har kuni 10:00–23:00",i1s:"Buyurtmalar har kuni qabul qilinadi.",i2:"Chirchiq bo'ylab",
-      i2s:"Yetkazish {f}, {ff} dan — bepul. Taxminan {t} daqiqa.",i3:"Telefon orqali buyurtma",foot:"Xan Shatir restorani, Chirchiq",menuLink:"Restoran menyusi",
+      i2s:"Yetkazish {b} + har km uchun {k}, {ff} dan — bepul. Taxminan {t} daqiqa.",
+      km:"km",feeOp:"operator aytadi",kmRule:"{b} + har km uchun {k}",kmBtn:"Masofani joylashuv bo'yicha hisoblash",kmAgain:"Qayta hisoblash",
+      km_wait:"Aniqlanmoqda…",km_err:"Joylashuvni aniqlab bo'lmadi — narxni operator aytadi",km_far:"Manzil uzoq — narxni operator aniqlaydi",i3:"Telefon orqali buyurtma",foot:"Xan Shatir restorani, Chirchiq",menuLink:"Restoran menyusi",
       made:"Sayt:",deliveryItem:"Доставка",packItem:"Одноразовая посуда",
       pack:"Bir martalik idishlar",packS:"Har bir porsiya uchun {f}, majburiy. Non va ichimliklar idishsiz.",packDish:"+ idish {f}",chPack:"Idish {f} / porsiya",
       agree:"Men <a href=\"{o}\" target=\"_blank\">ommaviy oferta</a> shartlarini qabul qilaman va <a href=\"{p}\" target=\"_blank\">maxfiylik siyosati</a>ga muvofiq shaxsiy ma'lumotlarimni qayta ishlashga rozilik beraman.",
@@ -238,7 +244,7 @@ const T = {
       lOferta:"Ommaviy oferta",lPrivacy:"Maxfiylik siyosati",lDelivery:"Yetkazib berish va qaytarish",sName:"Sotuvchi",sInn:"STIR"},
   ru:{tag:"Доставка",cart:"Корзина",kicker:"Доставка по Чирчику",h1:"Блюда Xan Shatir — к вам домой",
       lead:"Бешбармак, манты, шашлык и салаты привезём горячими. Оформите заказ — оператор перезвонит и подтвердит.",
-      sig:"Бешбармак — выбор шефа",chT:"минут",chFee:"Доставка",chFree:"бесплатно от {f}",chMin:"Минимальный заказ",chHours:"Ежедневно",
+      sig:"Бешбармак — выбор шефа",chT:"минут",chFee:"Доставка {b} + {k}/км",chFree:"бесплатно от {f}",chMin:"Минимальный заказ",chHours:"Ежедневно",
       closed:"Сейчас мы закрыты. Оставьте заказ — примем его утром в {h}:00.",
       ask:"Цену уточняйте",add:"Добавить",added:"Добавлено в корзину",sum:"сум",items:"блюд",checkout:"Оформить",
       cartT:"Корзина",empty:"Корзина пока пуста",emptyS:"Выберите блюда в меню",subtotal:"Блюда",fee:"Доставка",free:"бесплатно",total:"Итого",
@@ -248,7 +254,9 @@ const T = {
       noteSend:"Оператор перезвонит в течение 5 минут и подтвердит заказ.",need:"Введите имя, телефон и адрес",
       sendErr:"Не отправилось. Проверьте интернет или позвоните нам",okT:"Заказ принят!",okS:"Оператор скоро перезвонит. Примерное время доставки: {t} минут.",
       okNo:"Заказ",okMore:"Вернуться в меню",i1:"Ежедневно 10:00–23:00",i1s:"Заказы принимаем каждый день.",i2:"По всему Чирчику",
-      i2s:"Доставка {f}, от {ff} — бесплатно. Примерно {t} минут.",i3:"Заказ по телефону",foot:"Ресторан Xan Shatir, Чирчик",menuLink:"Меню ресторана",
+      i2s:"Доставка {b} + {k} за каждый км, от {ff} — бесплатно. Примерно {t} минут.",
+      km:"км",feeOp:"назовёт оператор",kmRule:"{b} + {k} за каждый км",kmBtn:"Рассчитать по геолокации",kmAgain:"Пересчитать",
+      km_wait:"Определяем…",km_err:"Не удалось определить место — стоимость назовёт оператор",km_far:"Адрес далеко — стоимость уточнит оператор",i3:"Заказ по телефону",foot:"Ресторан Xan Shatir, Чирчик",menuLink:"Меню ресторана",
       made:"Сайт:",deliveryItem:"Доставка",packItem:"Одноразовая посуда",
       pack:"Одноразовая посуда",packS:"{f} за каждую порцию, обязательно. Хлеб и напитки — без посуды.",packDish:"+ посуда {f}",chPack:"Посуда {f} / порция",
       agree:"Я принимаю условия <a href=\"{o}\" target=\"_blank\">публичной оферты</a> и даю согласие на обработку моих персональных данных в соответствии с <a href=\"{p}\" target=\"_blank\">политикой конфиденциальности</a>.",
@@ -272,7 +280,23 @@ const dname = d => d.n[lang] + (d.w ? ` (${d.w[lang]})` : '');
 const isOpen = () => { const h = new Date().getHours(); return h >= R.hours[0] && h < R.hours[1]; };
 const keys = () => Object.keys(cart).filter(k => cart[k] > 0 && dish(k) && dish(k).p);
 const subtotal = () => keys().reduce((s, k) => s + dish(k).p * cart[k], 0);
-const feeOf = s => s >= R.freeFrom ? 0 : R.fee;   // free delivery and the minimum order count the dishes only
+// delivery by distance: the guest's location gives the km; without it the price is null and the operator names it
+let geo = null, geoState = '';   // geo = {km, lat, lon}; geoState: '' | 'wait' | 'err' | 'far'
+const feeOf = s => s >= R.freeFrom ? 0 : geo ? R.base + R.perKm * geo.km : null;   // free delivery and the minimum order count the dishes only
+const kmFrom = (lat, lon) => {   // straight-line distance, km
+  const rad = x => x * Math.PI / 180, [a, b] = R.place, dLat = rad(lat - a), dLon = rad(lon - b);
+  const h = Math.sin(dLat / 2) ** 2 + Math.cos(rad(a)) * Math.cos(rad(lat)) * Math.sin(dLon / 2) ** 2;
+  return 6371 * 2 * Math.asin(Math.sqrt(h));
+};
+function locate(){
+  if (!navigator.geolocation){ geoState = 'err'; drawDrawer(); return; }
+  geoState = 'wait'; drawDrawer();
+  navigator.geolocation.getCurrentPosition(p => {
+    const { latitude: lat, longitude: lon } = p.coords, km = Math.max(1, Math.ceil(kmFrom(lat, lon)));
+    if (km > R.maxKm){ geo = null; geoState = 'far'; } else { geo = { km, lat, lon }; geoState = ''; }
+    drawDrawer(); drawCart();
+  }, () => { geoState = 'err'; drawDrawer(); }, { enableHighAccuracy: true, timeout: 15000 });
+}
 // disposable dishes: the owner's ticks from the panel, until they load each category's default
 let PACK = null;
 const packN = () => keys().reduce((s, k) => s + (needsPack(cat(k), dish(k), PACK) ? cart[k] : 0), 0);
@@ -282,12 +306,12 @@ function render(){
   document.documentElement.lang = lang;
   document.querySelectorAll('[data-i]').forEach(el => el.textContent = t(el.dataset.i));
   document.querySelectorAll('.lang button').forEach(b => b.classList.toggle('on', b.dataset.l === lang));
-  $('chips').innerHTML = [['fa-clock', `${R.time} ${t('chT')}`], ['fa-motorcycle', `${t('chFee')} ${fmt(R.fee)}`], ['fa-gift', t('chFree').replace('{f}', fmt(R.freeFrom))],
+  $('chips').innerHTML = [['fa-clock', `${R.time} ${t('chT')}`], ['fa-motorcycle', t('chFee').replace('{b}', fmt(R.base)).replace('{k}', fmt(R.perKm))], ['fa-gift', t('chFree').replace('{f}', fmt(R.freeFrom))],
     ['fa-box', t('chPack').replace('{f}', fmt(PACK_FEE))], ['fa-calendar-check', `${t('chHours')} ${R.hours[0]}:00–${R.hours[1]}:00`]]
     .map(([i, s]) => `<span><i class="fa-solid ${i}"></i>${s}</span>`).join('');
   $('closed').textContent = t('closed').replace('{h}', R.hours[0]); $('closed').classList.toggle('on', !isOpen());
   $('i1s').textContent = t('i1s');
-  $('i2s').textContent = t('i2s').replace('{f}', fmt(R.fee)).replace('{ff}', fmt(R.freeFrom)).replace('{t}', R.time);
+  $('i2s').textContent = t('i2s').replace('{b}', fmt(R.base)).replace('{k}', fmt(R.perKm)).replace('{ff}', fmt(R.freeFrom)).replace('{t}', R.time);
   $('legal').innerHTML = [['oferta', 'lOferta'], ['privacy', 'lPrivacy'], ['delivery', 'lDelivery']].map(([a, k]) => `<a href="${legal(a)}">${t(k)}</a>`).join('');
   $('seller').textContent = `${t('sName')}: ${blank(SELLER.name)} · ${t('sInn')}: ${blank(SELLER.inn)} · ${blank(SELLER.address)}`;
   $('phone').textContent = R.phone.replace(/(\+998)(\d\d)(\d{3})(\d\d)(\d\d)/, '$1 $2 $3 $4 $5'); $('phone').href = 'tel:' + R.phone;
@@ -316,7 +340,7 @@ function setQty(k, dq){
 function drawCart(){
   const n = keys().reduce((s, k) => s + cart[k], 0), s = subtotal();
   $('cartN').textContent = n || '';
-  $('barN').textContent = `${n} ${t('items')}`; $('barSum').textContent = fmt(s + packN() * PACK_FEE + (n ? feeOf(s) : 0));
+  $('barN').textContent = `${n} ${t('items')}`; $('barSum').textContent = fmt(s + packN() * PACK_FEE + (n ? feeOf(s) || 0 : 0));
   $('bar').classList.toggle('on', n > 0 && !$('drawer').classList.contains('on'));
   if ($('drawer').classList.contains('on') && view === 'cart') drawDrawer();
 }
@@ -339,9 +363,11 @@ function drawDrawer(){
         <div class="qty"><button data-q="${k}:-1" aria-label="−"><i class="fa-solid fa-minus"></i></button><b>${cart[k]}</b><button data-q="${k}:1" aria-label="+"><i class="fa-solid fa-plus"></i></button></div></div>`; }).join('')}
     <div class="sum"><div><span>${t('subtotal')}</span><span>${fmt(s)}</span></div>
       ${pn ? `<div><span><i class="fa-solid fa-box"></i>${t('pack')} × ${pn}</span><span>${fmt(pack)}</span></div><div class="pkn">${t('packS').replace('{f}', fmt(PACK_FEE))}</div>` : ''}
-      <div><span>${t('fee')}</span><span>${fee ? fmt(fee) : t('free')}</span></div>
-      <div class="tot"><span>${t('total')}</span><span>${fmt(s + pack + fee)}</span></div></div>
-    <div class="free">${fee ? `${t('freeLeft')} ${fmt(R.freeFrom - s)}` : t('freeOk')}<i style="--p:${Math.min(100, s / R.freeFrom * 100)}%"></i></div>
+      <div><span>${t('fee')}${geo && fee ? ` · ${geo.km} ${t('km')}` : ''}</span><span>${fee === 0 ? t('free') : fee ? fmt(fee) : t('feeOp')}</span></div>
+      ${fee === 0 ? '' : `<div class="pkn">${t('kmRule').replace('{b}', fmt(R.base)).replace('{k}', fmt(R.perKm))}${geoState ? '. ' + t('km_' + geoState) : ''}</div>
+        ${R.place && geoState !== 'wait' ? `<button class="geo" id="geoBtn" type="button"><i class="fa-solid fa-location-crosshairs"></i>${t(geo ? 'kmAgain' : 'kmBtn')}</button>` : ''}`}
+      <div class="tot"><span>${t('total')}</span><span>${fmt(s + pack + (fee || 0))}${fee == null ? ' + ' + t('fee').toLowerCase() : ''}</span></div></div>
+    <div class="free">${fee !== 0 ? `${t('freeLeft')} ${fmt(R.freeFrom - s)}` : t('freeOk')}<i style="--p:${Math.min(100, s / R.freeFrom * 100)}%"></i></div>
     <form class="fm" id="fm" novalidate>
       <h4>${t('who')}</h4>
       <label>${t('name')}<input id="fName" autocomplete="name" maxlength="60" value="${esc(v.name)}"></label>
@@ -357,7 +383,7 @@ function drawDrawer(){
       </div>
       <label class="agree" id="agreeBox"><input type="checkbox" id="fAgree"${v.agree ? ' checked' : ''}><span>${t('agree').replace('{o}', legal('oferta')).replace('{p}', legal('privacy'))}</span></label>
       ${s < R.minOrder ? `<div class="free">${t('minLeft').replace('{m}', fmt(R.minOrder)).replace('{l}', fmt(R.minOrder - s))}</div>` : ''}
-      <button class="btn" id="send"${s < R.minOrder ? ' disabled' : ''}><i class="fa-solid fa-paper-plane"></i>${t('send')} · ${fmt(s + pack + fee)}</button>
+      <button class="btn" id="send"${s < R.minOrder ? ' disabled' : ''}><i class="fa-solid fa-paper-plane"></i>${t('send')} · ${fmt(s + pack + (fee || 0))}${fee == null ? '+' : ''}</button>
       <div class="note">${t('noteSend')}</div>
     </form>`;
 }
@@ -366,7 +392,8 @@ function closeDrawer(){ $('drawer').classList.remove('on'); $('shade').classList
 function toast(s){ const el = $('toast'); el.textContent = s; el.classList.add('on'); clearTimeout(toast.tm); toast.tm = setTimeout(() => el.classList.remove('on'), 1800); }
 
 async function send(){
-  const name = $('fName').value.trim(), phone = $('fPhone').value.trim(), address = $('fAddr').value.trim(), comment = $('fCom').value.trim();
+  const name = $('fName').value.trim(), phone = $('fPhone').value.trim(), address = $('fAddr').value.trim();
+  let comment = $('fCom').value.trim();
   const pay = document.querySelector('[name=pay]:checked')?.value || 'cash';
   [['fName', name.length >= 2], ['fPhone', phone.replace(/\D/g, '').length >= 12], ['fAddr', address.length >= 3]].forEach(([id, ok]) => $(id).parentNode.classList.toggle('bad', !ok));
   if (document.querySelector('.fm .bad')){ toast(t('need')); return; }
@@ -375,7 +402,10 @@ async function send(){
   const s = subtotal(), fee = feeOf(s);
   const items = keys().map(k => { const d = dish(k); return [d.n.ru + (d.w ? ` (${d.w.ru})` : ''), cart[k], d.p]; });
   const pn = packN(); if (pn) items.push([t('packItem'), pn, PACK_FEE]);
-  if (fee) items.push([t('deliveryItem'), 1, fee]);
+  if (fee) items.push([`${t('deliveryItem')} (${geo.km} км)`, 1, fee]);
+  // the courier gets the guest's point on the map; with no km the operator prices the delivery
+  const where = geo ? `📍 https://yandex.uz/maps/?pt=${geo.lon.toFixed(5)},${geo.lat.toFixed(5)}&z=17` : fee == null ? 'Доставка по км: рассчитать' : '';
+  comment = [where, comment].filter(Boolean).join('\n');
   const id = LIVE.id(), btn = $('send'); btn.disabled = true;
   try {
     await LIVE.send({ k: 'order', id, delivery: { name, phone, address, comment, pay, agreed: true }, items, sum: items.reduce((a, [, q, p]) => a + q * p, 0) });
@@ -386,7 +416,8 @@ async function send(){
 }
 
 document.addEventListener('click', e => {
-  const el = e.target.closest('[data-q],[data-tab],[data-l],#cartBtn,#barOpen,#dClose,#shade,#okMore,#send'); if (!el) return;
+  const el = e.target.closest('[data-q],[data-tab],[data-l],#cartBtn,#barOpen,#dClose,#shade,#okMore,#send,#geoBtn'); if (!el) return;
+  if (el.id === 'geoBtn'){ locate(); return; }
   const d = el.dataset;
   if (d.q){ const [k, dq] = d.q.split(':'); setQty(k, +dq); return; }
   if (d.tab){ document.querySelectorAll('#tabs button').forEach(b => b.classList.toggle('on', b === el)); $('c-' + d.tab).scrollIntoView({ behavior: 'smooth' }); el.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' }); return; }
